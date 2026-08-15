@@ -1,0 +1,263 @@
+/* ================================
+   OVERLAY
+================================ */
+
+.overlay {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 2000;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: var(--page);
+
+    background:
+        rgba(0, 0, 0, 0.28);
+
+    animation:
+        demoOverlayIn
+        180ms
+        ease
+        both;
+}
+
+
+/* ================================
+   MODAL
+================================ */
+
+.modal {
+    width: 100%;
+    max-width: 560px;
+
+    background: var(--bg);
+
+    color: var(--fg);
+
+    box-shadow:
+        0 18px 60px
+        rgba(0, 0, 0, 0.14);
+
+    animation:
+        demoModalIn
+        220ms
+        cubic-bezier(0.2, 0.7, 0.2, 1)
+        both;
+}
+
+
+/* ================================
+   HEADER
+================================ */
+
+.header {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    min-height: 54px;
+
+    padding:
+        0
+        var(--space-3);
+
+    border-bottom:
+        var(--line-thin)
+        solid
+        var(--line-soft);
+
+    color: var(--fg);
+
+    font-size: 10px;
+    font-weight: 600;
+
+    line-height: 1;
+
+    letter-spacing: 0.05em;
+
+    text-transform: uppercase;
+}
+
+
+/* ================================
+   CLOSE
+================================ */
+
+.close {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 36px;
+    height: 36px;
+
+    padding: 0;
+
+    border: 0;
+
+    background: transparent;
+
+    color: var(--fg);
+
+    cursor: pointer;
+
+    transition:
+        opacity
+        var(--duration-fast)
+        var(--ease-standard);
+}
+
+.close:hover {
+    opacity: 0.45;
+}
+
+
+/* ================================
+   CONTENT
+================================ */
+
+.content {
+    padding:
+        var(--space-8)
+        var(--space-7)
+        var(--space-9);
+}
+
+.label {
+    margin:
+        0 0 var(--space-4);
+
+    color: var(--muted);
+
+    font-size: 9px;
+    font-weight: 600;
+
+    line-height: 1;
+
+    letter-spacing: 0.08em;
+
+    text-transform: uppercase;
+}
+
+.content h2 {
+    margin: 0;
+
+    color: var(--fg);
+
+    font-size: clamp(
+        42px,
+        6vw,
+        64px
+    );
+
+    font-weight: 400;
+
+    line-height: 0.94;
+
+    letter-spacing: var(--tracking-display);
+}
+
+.text {
+    max-width: 430px;
+
+    margin:
+        var(--space-6)
+        0
+        0;
+
+    color: var(--fg);
+
+    font-size: var(--text-md);
+    font-weight: 400;
+
+    line-height: var(--leading-relaxed);
+
+    letter-spacing: -0.015em;
+}
+
+
+/* ================================
+   ANIMATIONS
+================================ */
+
+@keyframes demoOverlayIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes demoModalIn {
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(10px)
+            scale(0.985);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+    }
+}
+
+
+/* ================================
+   MOBILE
+================================ */
+
+@media (max-width: 700px) {
+    .overlay {
+        align-items: flex-end;
+
+        padding:
+            var(--space-3);
+    }
+
+    .modal {
+        max-width: none;
+    }
+
+    .content {
+        padding:
+            var(--space-7)
+            var(--space-5)
+            var(--space-8);
+    }
+
+    .content h2 {
+        font-size: 46px;
+    }
+
+    .text {
+        font-size: var(--text-md);
+    }
+}
+
+
+/* ================================
+   REDUKCJA RUCHU
+================================ */
+
+@media (
+    prefers-reduced-motion: reduce
+) {
+    .overlay,
+    .modal {
+        animation: none;
+    }
+}

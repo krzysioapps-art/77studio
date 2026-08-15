@@ -1,0 +1,70 @@
+/* ================================
+   PAGE
+================================ */
+
+.page {
+    width: 100%;
+
+    padding:
+        var(--header-height)
+        var(--page)
+        var(--space-10);
+}
+
+
+/* ================================
+   SIATKA
+================================ */
+
+.grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    column-gap: var(--space-5);
+    row-gap: var(--space-8);
+
+    width: 100%;
+    max-width: var(--content-max);
+
+    margin-inline: auto;
+
+    padding-top: var(--space-8);
+}
+
+
+/* ================================
+   TABLET
+================================ */
+
+@media (max-width: 900px) {
+    .grid {
+        column-gap: var(--space-4);
+        row-gap: var(--space-7);
+
+        padding-top: var(--space-7);
+    }
+}
+
+
+/* ================================
+   MOBILE
+================================ */
+
+@media (max-width: 700px) {
+    .page {
+        padding:
+            var(--header-height)
+            var(--page)
+            var(--space-8);
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+
+        row-gap: var(--space-7);
+
+        padding-top: var(--space-6);
+    }
+}

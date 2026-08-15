@@ -1,0 +1,564 @@
+/* ================================
+   PAGE
+================================ */
+
+.page {
+  width: 100%;
+
+  padding:
+    var(--header-height) var(--page) var(--space-10);
+}
+
+
+/* ================================
+   WSPÓLNY CONTENT
+================================ */
+
+.intro,
+.contact,
+.location {
+  width: 100%;
+  max-width: var(--content-max);
+
+  margin-inline: auto;
+}
+
+
+/* ================================
+   INTRO
+================================ */
+
+.intro {
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: flex-end;
+
+  padding:
+    var(--space-9) 0 var(--space-7);
+}
+
+.year {
+  margin:
+    0 0 var(--space-4);
+
+  color: var(--fg);
+
+  font-size: var(--text-base);
+  font-weight: 600;
+
+  line-height: 1;
+
+  letter-spacing: 0.06em;
+
+  text-transform: uppercase;
+}
+
+.intro h1 {
+  max-width: 1000px;
+
+  margin: 0;
+
+  color: var(--fg);
+
+  font-size: clamp(var(--display-sm),
+      7vw,
+      var(--display-lg));
+
+  font-weight: 400;
+
+  line-height: 0.93;
+
+  letter-spacing: var(--tracking-display);
+}
+
+
+/* ================================
+   KONTAKT
+================================ */
+
+.contact {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr) minmax(320px, 500px);
+
+  gap: var(--space-8);
+
+  padding:
+    var(--space-7) 0 var(--space-9);
+}
+
+
+/* ================================
+   ADRES
+================================ */
+
+.label {
+  margin:
+    0 0 var(--space-4);
+
+  color: var(--muted);
+
+  font-size: var(--text-sm);
+  font-weight: 600;
+
+  line-height: 1;
+
+  letter-spacing: var(--tracking-wide);
+
+  text-transform: uppercase;
+}
+
+.address address {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: var(--space-5);
+
+  font-style: normal;
+}
+
+.address strong {
+  color: var(--fg);
+
+  font-size: var(--text-lg);
+  font-weight: 500;
+
+  line-height: 1.25;
+
+  letter-spacing: -0.025em;
+}
+
+.address span {
+  color: var(--fg);
+
+  font-size: var(--text-md);
+  font-weight: 400;
+
+  line-height: var(--leading-relaxed);
+
+  letter-spacing: -0.015em;
+}
+
+
+/* ================================
+   DANE KONTAKTOWE
+================================ */
+
+.details {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: flex-start;
+}
+
+.email,
+.phone {
+  color: var(--fg);
+
+  font-size: 28px;
+  font-weight: 500;
+
+  line-height: 1.12;
+
+  letter-spacing: -0.04em;
+
+  transition:
+    opacity var(--duration-fast) var(--ease-standard);
+}
+
+.phone {
+  margin-top: var(--space-1);
+}
+
+.email:hover,
+.phone:hover {
+  opacity: 0.55;
+}
+
+
+/* ================================
+   SOCIAL
+================================ */
+
+.social {
+  display: flex;
+
+  gap: var(--space-4);
+
+  margin-top: var(--space-7);
+}
+
+.social a {
+  color: var(--fg);
+
+  font-size: var(--text-sm);
+  font-weight: 600;
+
+  line-height: 1;
+
+  letter-spacing: var(--tracking-wide);
+
+  text-transform: uppercase;
+
+  transition:
+    opacity var(--duration-fast) var(--ease-standard);
+}
+
+.social a:hover {
+  opacity: 0.55;
+}
+
+
+/* ================================
+   LOKALIZACJA
+================================ */
+
+.location {
+  margin-bottom: var(--space-9);
+}
+
+.locationHeader {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  padding:
+    var(--space-3) 0 var(--space-3);
+
+  border-top:
+    var(--line-thin) solid var(--line-soft);
+
+  color: var(--fg);
+
+  font-size: var(--text-sm);
+  font-weight: 600;
+
+  line-height: 1;
+
+  letter-spacing: var(--tracking-wide);
+
+  text-transform: uppercase;
+}
+
+.locationHeader a {
+  display: inline-flex;
+
+  align-items: center;
+
+  padding:
+    var(--space-2) var(--space-2);
+
+  border-top:
+    var(--line-strong) solid var(--fg);
+
+  border-right:
+    var(--line-strong) solid var(--fg);
+
+  color: var(--fg);
+
+  font-size: var(--text-xs);
+  font-weight: 600;
+
+  line-height: var(--leading-tight);
+
+  letter-spacing: 0.02em;
+
+  text-transform: none;
+
+  transition:
+    opacity var(--duration-fast) var(--ease-standard);
+}
+
+.locationHeader a:hover {
+  opacity: 0.55;
+}
+
+
+/* ================================
+   MAPA
+================================ */
+
+.map {
+  position: relative;
+
+  width: 100%;
+  height: 400px;
+
+  overflow: hidden;
+
+  border:
+    var(--line-thin) solid var(--line);
+
+  background: var(--bg);
+}
+
+.map svg {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+}
+
+
+/* ================================
+   SIATKA
+================================ */
+
+.gridLines {
+  fill: none;
+
+  stroke: var(--line);
+
+  stroke-width: 0.8;
+
+  opacity: 0.45;
+}
+
+
+/* ================================
+   GŁÓWNE ULICE
+================================ */
+
+.mainStreets {
+  fill: none;
+
+  stroke: var(--fg);
+
+  stroke-width: 2.5;
+
+  opacity: 0.75;
+}
+
+
+/* ================================
+   POBOCZNE ULICE
+================================ */
+
+.sideStreets {
+  fill: none;
+
+  stroke: var(--line);
+
+  stroke-width: 1.2;
+
+  opacity: 0.75;
+}
+
+
+/* ================================
+   NAZWY ULIC
+================================ */
+
+.streetLabels {
+  fill: var(--fg);
+
+  font-family:
+    var(--font-open-sans),
+    sans-serif;
+
+  font-size: 11px;
+  font-weight: 600;
+
+  letter-spacing: 0.08em;
+}
+
+.streetLabels text {
+  dominant-baseline: middle;
+}
+
+
+/* ================================
+   PUNKT
+================================ */
+
+.locationMarker {
+  fill: none;
+
+  stroke: var(--fg);
+
+  stroke-width: 3;
+}
+
+.locationMarker circle {
+  fill: var(--bg);
+
+  stroke: var(--fg);
+
+  stroke-width: 3;
+}
+
+
+/* ================================
+   OPIS PUNKTU
+================================ */
+
+.locationLabel {
+  fill: var(--fg);
+
+  font-family:
+    var(--font-open-sans),
+    sans-serif;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  letter-spacing: 0.04em;
+}
+
+.locationLabel text+text {
+  fill: var(--muted);
+
+  font-size: 10px;
+  font-weight: 500;
+
+  letter-spacing: 0.08em;
+}
+
+
+/* ================================
+   DZIELNICA
+================================ */
+
+.district {
+  fill: var(--muted);
+
+  font-family:
+    var(--font-open-sans),
+    sans-serif;
+
+  font-size: 10px;
+  font-weight: 600;
+
+  letter-spacing: 0.15em;
+}
+
+
+/* ================================
+   MOBILE
+================================ */
+
+@media (max-width: 700px) {
+  .page {
+    padding:
+      var(--header-height) var(--page) var(--space-8);
+  }
+
+
+  /* ==============================
+       INTRO
+    ============================== */
+
+  .intro {
+    min-height: 0;
+
+    display: block;
+
+    padding:
+      var(--space-6) 0 var(--space-6);
+  }
+
+  .year {
+    margin-bottom: var(--space-3);
+
+    font-size: var(--text-sm);
+  }
+
+  .intro h1 {
+    font-size: 48px;
+  }
+
+
+  /* ==============================
+       KONTAKT
+    ============================== */
+
+  .contact {
+    display: block;
+
+    padding:
+      var(--space-6) 0 var(--space-8);
+  }
+
+  .label {
+    margin-bottom: var(--space-3);
+
+    font-size: var(--text-sm);
+  }
+
+  .address address {
+    gap: var(--space-4);
+  }
+
+  .address strong {
+    font-size: var(--text-lg);
+  }
+
+  .address span {
+    font-size: var(--text-md);
+  }
+
+  .details {
+    margin-top: var(--space-7);
+  }
+
+  .email,
+  .phone {
+    font-size: 24px;
+  }
+
+  .social {
+    margin-top: var(--space-6);
+
+    gap: var(--space-3);
+  }
+
+  .social a {
+    font-size: var(--text-sm);
+  }
+
+
+  /* ==============================
+       LOKALIZACJA
+    ============================== */
+
+  .location {
+    margin-bottom: var(--space-7);
+  }
+
+  .locationHeader {
+    padding:
+      var(--space-2) 0 var(--space-2);
+
+    font-size: var(--text-sm);
+  }
+
+  .locationHeader a {
+    font-size: var(--text-xs);
+  }
+
+  .map {
+    height: 300px;
+  }
+
+  .streetLabels {
+    font-size: 10px;
+  }
+
+  .locationLabel {
+    font-size: 11px;
+  }
+
+  .locationLabel text+text {
+    font-size: 8px;
+  }
+
+  .district {
+    font-size: 8px;
+  }
+}

@@ -1,69 +1,258 @@
-import Image from "next/image";
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
+
+import { formatPolishText } from "@/lib/polish-text";
+
+import { Hero } from "./hero";
+
 import styles from "./page.module.css";
 
-export default function Home() {
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>
-            To get started, edit the{" "}
-            <code className={styles.code}>page.tsx</code> file.
-          </h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
-  );
+const projects = [
+    {
+        slug: "swidernojer",
+        name: "Świdernojer",
+        location: "Warszawa · Falenica",
+        image:
+            "https://77studio.pl/wp-content/uploads/2025/04/warszawa-zapole-fot-piotr-krajewski-LQ_15_D_3K2A5487-1.jpg",
+    },
+    {
+        slug: "dom-35-35-na-skarpie",
+        name: "Dom 35.35 na skarpie",
+        location: "Mazowsze",
+        image:
+            "https://77studio.pl/wp-content/uploads/2025/04/pl-plock-szpitalna-1-fot-piotr-krajewski-LQ_06_D_3K2A2118-1.jpg",
+    },
+    {
+        slug: "willa-pod-skocznia",
+        name: "Willa pod Skocznią",
+        location: "Warszawa · Mokotów",
+        image:
+            "https://77studio.pl/wp-content/uploads/2025/04/YAS7948-HDR-copy.jpg",
+    },
+];
+
+export default function HomePage() {
+    return (
+        <>
+
+            <main className={styles.page}>
+
+                <Hero />
+
+
+                <section
+                    className={
+                        styles.introduction
+                    }
+                >
+                    <div
+                        className={
+                            styles.introductionMain
+                        }
+                    >
+                        <h1>
+                            Architektura
+                            <br />
+                            jest sztuką
+                            <br />
+                            kontekstu.
+                        </h1>
+                    </div>
+
+                    <div
+                        className={
+                            styles.introductionCopy
+                        }
+                    >
+                        <p>
+                            {formatPolishText(
+                                "Od 1999 roku projektujemy przestrzenie do życia, pracy i odpoczynku.",
+                            )}
+                        </p>
+
+                        <p>
+                            {formatPolishText(
+                                "Szukamy relacji pomiędzy człowiekiem, miejscem, materiałem i czasem.",
+                            )}
+                        </p>
+                    </div>
+                </section>
+
+
+                <section
+                    className={styles.projects}
+                >
+                    <div
+                        className={
+                            styles.projectsHeader
+                        }
+                    >
+                        <span>
+                            Wybrane projekty
+                        </span>
+
+                        <Link href="/projekty">
+                            <span>
+                                Wszystkie projekty
+                            </span>
+
+                            <ArrowUpRight
+                                size={14}
+                                strokeWidth={1.8}
+                                aria-hidden="true"
+                            />
+                        </Link>
+                    </div>
+
+                    <div
+                        className={
+                            styles.projectList
+                        }
+                    >
+                        {projects.map(
+                            (project) => (
+                                <Link
+                                    key={
+                                        project.slug
+                                    }
+                                    href={`/projekty/${project.slug}`}
+                                    className={
+                                        styles.project
+                                    }
+                                >
+                                    <div
+                                        className={
+                                            styles.projectImage
+                                        }
+                                    >
+                                        <img
+                                            src={
+                                                project.image
+                                            }
+                                            alt={
+                                                project.name
+                                            }
+                                            loading="lazy"
+                                        />
+                                    </div>
+
+                                    <div
+                                        className={
+                                            styles.projectInfo
+                                        }
+                                    >
+                                        <strong>
+                                            {
+                                                project.name
+                                            }
+                                        </strong>
+
+                                        <span>
+                                            {
+                                                project.location
+                                            }
+                                        </span>
+                                    </div>
+                                </Link>
+                            ),
+                        )}
+                    </div>
+                </section>
+
+
+                <section
+                    className={styles.statement}
+                >
+                    <div
+                        className={
+                            styles.statementLead
+                        }
+                    >
+                        <p>
+                            Projektujemy
+                            <br />
+                            dla ludzi.
+                        </p>
+                    </div>
+
+                    <div
+                        className={
+                            styles.statementCopy
+                        }
+                    >
+                        <p>
+                            {formatPolishText(
+                                "Tworzymy środowisko do życia – wypoczynku, pracy czy rekreacji – w pełnej symbiozie z otoczeniem.",
+                            )}
+                        </p>
+
+                        <p>
+                            {formatPolishText(
+                                "Zależy nam na architekturze, która nie kończy się na wizualizacji, ale przez lata pozostaje dobrym miejscem do życia.",
+                            )}
+                        </p>
+
+                        <Link
+                            href="/studio"
+                            className={
+                                styles.statementLink
+                            }
+                        >
+                            <span>
+                                Poznaj 77STUDIO
+                            </span>
+
+                            <ArrowUpRight
+                                size={14}
+                                strokeWidth={1.8}
+                                aria-hidden="true"
+                            />
+                        </Link>
+                    </div>
+                </section>
+
+
+                <section
+                    className={styles.contact}
+                >
+                    <div
+                        className={
+                            styles.contactMain
+                        }
+                    >
+                        <p>
+                            Porozmawiajmy
+                            <br />
+                            o projekcie.
+                        </p>
+                    </div>
+
+                    <div
+                        className={
+                            styles.contactSide
+                        }
+                    >
+                        <p>
+                            77STUDIO architektury
+                            <br />
+                            Warszawa
+                        </p>
+
+                        <Link href="/kontakt">
+                            <span>
+                                Kontakt
+                            </span>
+
+                            <ArrowUpRight
+                                size={14}
+                                strokeWidth={1.8}
+                                aria-hidden="true"
+                            />
+                        </Link>
+                    </div>
+                </section>
+
+            </main>
+        </>
+    );
 }
