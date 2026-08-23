@@ -16,10 +16,31 @@ export function Hero() {
         }
 
         let frame = 0;
+        let animationFrame = 0;
+        let isCompact = false;
 
-        const update = () => {
-            frame = 0;
+        const applyDimensions = (
+            width: number,
+            height: number,
+            left: number,
+        ) => {
+            hero.style.setProperty(
+                "--hero-width",
+                `${width}px`,
+            );
 
+            hero.style.setProperty(
+                "--hero-height",
+                `${height}px`,
+            );
+
+            hero.style.setProperty(
+                "--hero-left",
+                `${left}px`,
+            );
+        };
+
+        const getDimensions = () => {
             const viewportWidth =
                 window.innerWidth;
 
@@ -45,42 +66,6 @@ export function Hero() {
                     ),
                 ) || 1280;
 
-            /*
-             * MOBILE
-             *
-             * Na mobile Hero nie zmniejsza się
-             * podczas scrollowania.
-             *
-             * Zajmuje cały viewport.
-             */
-
-            if (viewportWidth <= 700) {
-                hero.style.setProperty(
-                    "--hero-width",
-                    "100vw",
-                );
-
-                hero.style.setProperty(
-                    "--hero-height",
-                    "100svh",
-                );
-
-                hero.style.setProperty(
-                    "--hero-left",
-                    "0px",
-                );
-
-                return;
-            }
-
-            /*
-             * DESKTOP
-             *
-             * Hero zaczyna jako pełny viewport,
-             * a podczas scrollowania zmniejsza się
-             * do szerokości contentu.
-             */
-
             const contentWidth =
                 Math.min(
                     viewportWidth -
@@ -88,62 +73,348 @@ export function Hero() {
                     contentMax,
                 );
 
-            const imageRatio =
-                16 / 9;
+            const imageRatio = 16 / 9;
 
             const finalHeight =
                 contentWidth /
                 imageRatio;
 
-            const shrinkDistance =
-                viewportHeight * 0.5;
-
-            const progress =
-                Math.min(
-                    Math.max(
-                        window.scrollY /
-                            shrinkDistance,
-                        0,
-                    ),
-                    1,
-                );
-
-            const width =
-                viewportWidth -
+            const finalLeft =
                 (
                     viewportWidth -
                     contentWidth
-                ) *
-                    progress;
-
-            const height =
-                viewportHeight -
-                (
-                    viewportHeight -
-                    finalHeight
-                ) *
-                    progress;
-
-            const left =
-                (
-                    viewportWidth -
-                    width
                 ) / 2;
 
-            hero.style.setProperty(
-                "--hero-width",
-                `${width}px`,
-            );
+            return {
+                viewportWidth,
+                viewportHeight,
+                contentWidth,
+                finalHeight,
+                finalLeft,
+            };
+        };
 
-            hero.style.setProperty(
-                "--hero-height",
-                `${height}px`,
-            );
+        /*
+         * Delikatny easing bez mocnego
+         * overshootu.
+         *
+         * Końcówka jest lekko miękka,
+         * ale zdjęcie nie "odbija".
+         */
+        const easeOutSoft = (
+            progress: number,
+        ) => {
+            const c1 = 1.25;
+            const c3 = c1 + 1;
 
-            hero.style.setProperty(
-                "--hero-left",
-                `${left}px`,
+            return (
+                1 +
+                c3 *
+                    Math.pow(
+                        progress - 1,
+                        3,
+                    ) +
+                c1 *
+                    Math.pow(
+                        progress - 1,
+                        2,
+                    )
             );
+        };
+
+        const animateTo = (
+            targetCompact: boolean,
+        ) => {
+            if (animationFrame) {
+                window.cancelAnimationFrame(
+                    animationFrame,
+                );
+
+                animationFrame = 0;
+            }
+
+            const {
+                viewportWidth,
+                viewportHeight,
+                contentWidth,
+                finalHeight,
+                finalLeft,
+            } = getDimensions();
+
+            /*
+             * Stan początkowy jest jawny.
+             *
+             * Dzięki temu pierwsza animacja
+             * zawsze startuje z prawidłowego
+             * centrum viewportu.
+             */
+            const from = targetCompact
+                ? {
+                      width:
+                          viewportWidth,
+                      height:
+                          viewportHeight,
+                      left: 0,
+                  }
+                : {
+                      width:
+                          contentWidth,
+                      height:
+                          finalHeight,
+                      left:
+                          finalLeft,
+                  };
+
+            const to = targetCompact
+                ? {
+                      width:
+                          contentWidth,
+                      height:
+                          finalHeight,
+                      left:
+                          finalLeft,
+                  }
+                : {
+                      width:
+                          viewportWidth,
+                      height:
+                          viewportHeight,
+                      left: 0,
+                  };
+
+            /*
+             * Jeżeli odwracamy animację
+             * w jej trakcie, chcemy wystartować
+             * z aktualnej pozycji.
+             */
+            const computed =
+                getComputedStyle(hero);
+
+            const currentWidth =
+                parseFloat(
+                    computed.getPropertyValue(
+                        "--hero-width",
+                    ),
+                );
+
+            const currentHeight =
+                parseFloat(
+                    computed.getPropertyValue(
+                        "--hero-height",
+                    ),
+                );
+
+            const currentLeft =
+                parseFloat(
+                    computed.getPropertyValue(
+                        "--hero-left",
+                    ),
+                );
+
+            const hasCurrentPosition =
+                Number.isFinite(
+                    currentWidth,
+                ) &&
+                Number.isFinite(
+                    currentHeight,
+                ) &&
+                Number.isFinite(
+                    currentLeft,
+                );
+
+            const actualFrom =
+                hasCurrentPosition
+                    ? {
+                          width:
+                              currentWidth,
+                          height:
+                              currentHeight,
+                          left:
+                              currentLeft,
+                      }
+                    : from;
+
+            /*
+             * Przy pierwszym przejściu
+             * wymuszamy pełny stan.
+             *
+             * To eliminuje problem startu
+             * animacji od lewej strony.
+             */
+            if (
+                targetCompact &&
+                !isCompact
+            ) {
+                applyDimensions(
+                    viewportWidth,
+                    viewportHeight,
+                    0,
+                );
+            }
+
+            const start =
+                targetCompact &&
+                !isCompact
+                    ? {
+                          width:
+                              viewportWidth,
+                          height:
+                              viewportHeight,
+                          left: 0,
+                      }
+                    : actualFrom;
+
+            const duration = 560;
+
+            const animationStart =
+                performance.now();
+
+            const tick = (
+                now: number,
+            ) => {
+                const elapsed =
+                    now -
+                    animationStart;
+
+                const linearProgress =
+                    Math.min(
+                        elapsed /
+                            duration,
+                        1,
+                    );
+
+                const progress =
+                    easeOutSoft(
+                        linearProgress,
+                    );
+
+                const width =
+                    start.width +
+                    (
+                        to.width -
+                        start.width
+                    ) *
+                        progress;
+
+                const height =
+                    start.height +
+                    (
+                        to.height -
+                        start.height
+                    ) *
+                        progress;
+
+                const left =
+                    start.left +
+                    (
+                        to.left -
+                        start.left
+                    ) *
+                        progress;
+
+                applyDimensions(
+                    width,
+                    height,
+                    left,
+                );
+
+                if (
+                    linearProgress <
+                    1
+                ) {
+                    animationFrame =
+                        window.requestAnimationFrame(
+                            tick,
+                        );
+                } else {
+                    animationFrame = 0;
+
+                    applyDimensions(
+                        to.width,
+                        to.height,
+                        to.left,
+                    );
+                }
+            };
+
+            animationFrame =
+                window.requestAnimationFrame(
+                    tick,
+                );
+        };
+
+        const update = () => {
+            frame = 0;
+
+            const viewportWidth =
+                window.innerWidth;
+
+            const viewportHeight =
+                window.innerHeight;
+
+            /*
+             * MOBILE
+             */
+
+            if (viewportWidth <= 700) {
+                if (animationFrame) {
+                    window.cancelAnimationFrame(
+                        animationFrame,
+                    );
+
+                    animationFrame = 0;
+                }
+
+                isCompact = false;
+
+                applyDimensions(
+                    viewportWidth,
+                    viewportHeight,
+                    0,
+                );
+
+                return;
+            }
+
+            /*
+             * Scroll jest wyłącznie
+             * przełącznikiem między dwoma
+             * stanami Hero.
+             */
+
+            const scrollY =
+                window.scrollY;
+
+            const triggerDistance = 24;
+
+            /*
+             * ZMNIEJSZENIE
+             */
+
+            if (
+                scrollY >
+                    triggerDistance &&
+                !isCompact
+            ) {
+                isCompact = true;
+
+                animateTo(true);
+
+                return;
+            }
+
+            /*
+             * POWRÓT DO PEŁNEGO HERO
+             */
+
+            if (
+                scrollY <= 0 &&
+                isCompact
+            ) {
+                isCompact = false;
+
+                animateTo(false);
+            }
         };
 
         const requestUpdate = () => {
@@ -156,6 +427,21 @@ export function Hero() {
                     update,
                 );
         };
+
+        /*
+         * Stan początkowy.
+         */
+
+        const {
+            viewportWidth,
+            viewportHeight,
+        } = getDimensions();
+
+        applyDimensions(
+            viewportWidth,
+            viewportHeight,
+            0,
+        );
 
         update();
 
@@ -186,6 +472,12 @@ export function Hero() {
             if (frame) {
                 window.cancelAnimationFrame(
                     frame,
+                );
+            }
+
+            if (animationFrame) {
+                window.cancelAnimationFrame(
+                    animationFrame,
                 );
             }
         };
